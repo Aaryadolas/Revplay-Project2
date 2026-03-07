@@ -1,0 +1,86 @@
+<div class="upload-page">
+  <div class="page-header">
+    <h1>⬆️ Upload Song</h1>
+    <p>Share your music with the world</p>
+  </div>
+
+  <div class="upload-card">
+    <div class="success-banner" *ngIf="success()">
+      ✅ Song uploaded successfully! Your music is now live.
+    </div>
+
+    <div class="error-banner" *ngIf="error()">
+      ⚠️ {{error()}}
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <!-- Audio Upload -->
+      <div class="upload-zone" (click)="audioInput.click()">
+        <input #audioInput type="file" accept="audio/*" style="display:none" (change)="onAudioSelect($event)">
+        <div class="zone-content" *ngIf="!audioFileName()">
+          <span class="zone-icon">🎵</span>
+          <span class="zone-title">Click to upload audio file</span>
+          <span class="zone-subtitle">MP3, WAV, FLAC up to 50MB</span>
+        </div>
+        <div class="zone-content" *ngIf="audioFileName()">
+          <span class="zone-icon">✅</span>
+          <span class="zone-title">{{audioFileName()}}</span>
+          <span class="zone-subtitle">Click to change</span>
+        </div>
+      </div>
+
+      <div class="audio-preview" *ngIf="audioPreview()">
+        <audio controls [src]="audioPreview()"></audio>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Song Title *</label>
+          <input type="text" placeholder="Enter song title" [(ngModel)]="form.title" name="title">
+        </div>
+
+        <div class="form-group">
+          <label>Genre</label>
+          <select [(ngModel)]="form.genre" name="genre">
+            <option value="">Select genre</option>
+            <option *ngFor="let g of genres" [value]="g">{{g}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Duration (e.g. 3:45)</label>
+          <input type="text" placeholder="3:45" [(ngModel)]="form.duration" name="duration">
+        </div>
+
+        <div class="form-group">
+          <label>Album</label>
+          <select [(ngModel)]="form.albumId" name="albumId">
+            <option value="">No album</option>
+            <option *ngFor="let a of albums()" [value]="a.id">{{a.title}}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Cover Image -->
+      <div class="cover-upload" (click)="coverInput.click()">
+        <input #coverInput type="file" accept="image/*" style="display:none" (change)="onCoverSelect($event)">
+        <div class="cover-placeholder" *ngIf="!coverFileName()">
+          <span>🖼️</span>
+          <span>Upload cover image (optional)</span>
+        </div>
+        <div class="cover-selected" *ngIf="coverFileName()">
+          <span>✅ {{coverFileName()}}</span>
+          <span class="change">Change</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-upload" [disabled]="loading()">
+        <span *ngIf="!loading()">⬆️ Upload Song</span>
+        <span *ngIf="loading()" class="uploading">
+          <span class="spinner"></span>
+          Uploading...
+        </span>
+      </button>
+    </form>
+  </div>
+</div>

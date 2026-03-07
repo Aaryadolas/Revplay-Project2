@@ -1,0 +1,205 @@
+/* ================================================================
+   PLAYER BAR — sits in the grid row at the bottom of the layout
+   Full width, all controls in one line like Spotify
+   ================================================================ */
+
+   .player-bar {
+    width: 100%;
+    height: 80px;
+    background: #181818;
+    border-top: 1px solid #282828;
+  
+    /* 3 columns: song info | controls+seekbar | volume */
+    display: grid;
+    grid-template-columns: 280px 1fr 200px;
+    align-items: center;
+    padding: 0 20px;
+    gap: 16px;
+  }
+  
+  /* ── LEFT: cover art + song name ──────────── */
+  .player-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    overflow: hidden;
+  }
+  
+  .art-box {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    border-radius: 5px;
+    background: #282828;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  
+    .art-icon { font-size: 22px; }
+  }
+  
+  .track-info {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .track-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .track-artist {
+    display: block;
+    font-size: 11px;
+    color: #b3b3b3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* ── CENTER: buttons + seek bar ───────────── */
+  .player-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+  }
+  
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  
+  .ctrl-btn {
+    background: none;
+    border: none;
+    color: #b3b3b3;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: color 0.15s, transform 0.1s;
+  
+    &:hover  { color: #fff; transform: scale(1.12); }
+    &.active { color: #1DB954; }
+  }
+  
+  .play-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    border: none;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.1s;
+  
+    &:hover {
+      background: #1DB954;
+      transform: scale(1.06);
+    }
+  }
+  
+  /* Seek bar row */
+  .seek-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .time-txt {
+    font-size: 11px;
+    color: #b3b3b3;
+    min-width: 34px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  
+  /* ── RIGHT: volume ────────────────────────── */
+  .player-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  
+  /* ── Sliders (seek + volume) ──────────────── */
+  .seek-slider { flex: 1; }
+  .vol-slider  { width: 90px; }
+  
+  .seek-slider,
+  .vol-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(
+      to right,
+      #1DB954 0%,
+      #1DB954 var(--pct, 0%),
+      #535353 var(--pct, 0%),
+      #535353 100%
+    );
+  
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 0; height: 0;
+      border-radius: 50%;
+      background: #fff;
+      transition: width 0.12s, height 0.12s;
+    }
+    &:hover::-webkit-slider-thumb { width: 13px; height: 13px; }
+  
+    &::-moz-range-thumb {
+      width: 0; height: 0;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      transition: width 0.12s, height 0.12s;
+    }
+    &:hover::-moz-range-thumb { width: 13px; height: 13px; }
+  }
+  
+  /* ── Mobile ───────────────────────────────── */
+  @media (max-width: 900px) {
+    .player-bar   { grid-template-columns: auto 1fr; }
+    .player-right { display: none; }
+  }
+  
+  @media (max-width: 600px) {
+    .player-bar  { padding: 0 12px; gap: 8px; }
+    .time-txt    { display: none; }
+    .ctrl-btn:first-child,
+    .ctrl-btn:last-child { display: none; }
+  }

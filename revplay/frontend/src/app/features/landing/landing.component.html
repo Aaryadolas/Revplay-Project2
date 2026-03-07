@@ -1,0 +1,97 @@
+<div class="landing">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">🎵</span>
+      <span class="logo-text">RevPlay</span>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="nav-link">Home</a>
+      <a href="#features" class="nav-link">Explore</a>
+      <a href="#about" class="nav-link">About</a>
+    </div>
+    <div class="nav-actions">
+      <a routerLink="/auth" class="btn-outline">Login</a>
+      <a routerLink="/auth" class="btn-filled">Sign Up</a>
+    </div>
+    <button class="hamburger" (click)="mobileMenuOpen = !mobileMenuOpen">☰</button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" *ngIf="mobileMenuOpen">
+    <a routerLink="/auth" (click)="mobileMenuOpen = false">Login</a>
+    <a routerLink="/auth" (click)="mobileMenuOpen = false">Sign Up</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="music-notes">
+        <span>♪</span><span>♫</span><span>♬</span><span>♩</span><span>♭</span>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🎵 New Music Every Day</div>
+      <h1 class="hero-title">Welcome to <span class="accent">RevPlay</span></h1>
+      <p class="hero-subtitle">Stream. Discover. Create.</p>
+      <p class="hero-desc">The platform where listeners discover incredible music and artists share their passion with the world.</p>
+      <div class="hero-buttons">
+        <a routerLink="/auth" class="btn-hero-primary">🎧 Start Listening</a>
+        <a routerLink="/auth" class="btn-hero-secondary">🎤 Join as Artist</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">10K+</span>
+          <span class="stat-label">Songs</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-num">500+</span>
+          <span class="stat-label">Artists</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-num">50K+</span>
+          <span class="stat-label">Listeners</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <h2 class="features-title">Everything You Need</h2>
+    <p class="features-subtitle">A complete music ecosystem for listeners and creators</p>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let f of features">
+        <div class="feature-icon">{{f.icon}}</div>
+        <h3>{{f.title}}</h3>
+        <p>{{f.desc}}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="about-content">
+      <div class="about-text">
+        <h2>Built for Music Lovers</h2>
+        <p>RevPlay is a modern music streaming platform that connects listeners with independent artists. Stream thousands of tracks, create personalized playlists, and discover new music every day.</p>
+        <a routerLink="/auth" class="btn-primary">Get Started Free</a>
+      </div>
+      <div class="about-visual">
+        <div class="vinyl">
+          <div class="vinyl-inner">🎵</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">🎵 RevPlay</div>
+    <p>© 2024 RevPlay. Stream. Discover. Create.</p>
+  </footer>
+</div>

@@ -1,0 +1,72 @@
+
+<div class="layout">
+  <aside class="sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-logo">
+      <span>🎵</span>
+      <span class="logo-text">RevPlay</span>
+      <span class="artist-badge">Artist</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a routerLink="dashboard" routerLinkActive="active"
+         class="nav-item"
+         (click)="closeSidebar()">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a routerLink="upload" routerLinkActive="active"
+         class="nav-item"
+         (click)="closeSidebar()">
+        <span class="icon">⬆️</span>
+        <span>Upload Song</span>
+      </a>
+
+      <a routerLink="albums" routerLinkActive="active"
+         class="nav-item"
+         (click)="closeSidebar()">
+        <span class="icon">💿</span>
+        <span>Albums</span>
+      </a>
+
+      <a routerLink="analytics" routerLinkActive="active"
+         class="nav-item"
+         (click)="closeSidebar()">
+        <span class="icon">📈</span>
+        <span>Analytics</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user" *ngIf="authService.currentUser()">
+      <div class="user-avatar">
+        {{ authService.currentUser()!.username[0].toUpperCase() }}
+      </div>
+      <div class="user-info">
+        <span>
+          {{ authService.currentUser()!.displayName || authService.currentUser()!.username }}
+        </span>
+        <span class="role">🎤 Artist</span>
+      </div>
+      <button class="logout-btn" (click)="authService.logout()">⏻</button>
+    </div>
+  </aside>
+
+  <div class="overlay"
+       *ngIf="sidebarOpen"
+       (click)="toggleSidebar()">
+  </div>
+
+  <main class="main-content">
+    <div class="mobile-header">
+      <button class="hamburger"
+              (click)="toggleSidebar()">☰</button>
+      <span class="mobile-logo">🎵 RevPlay</span>
+    </div>
+
+    <div class="content-scroll">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <app-player></app-player>
+</div>

@@ -1,0 +1,85 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1>Welcome back, {{authService.currentUser()?.displayName || authService.currentUser()?.username}}! 🎤</h1>
+    <p>Here's how your music is performing</p>
+  </div>
+
+  <div *ngIf="loading()" class="loading-state">
+    <div class="skeleton-metrics">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3]"></div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading() && analytics()">
+    <!-- Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon">🎵</div>
+        <div class="metric-value">{{analytics()!.totalSongs}}</div>
+        <div class="metric-label">Total Songs</div>
+      </div>
+      <div class="metric-card featured">
+        <div class="metric-icon">▶️</div>
+        <div class="metric-value">{{analytics()!.totalPlays | number}}</div>
+        <div class="metric-label">Total Plays</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">❤️</div>
+        <div class="metric-value">{{analytics()!.totalFavorites}}</div>
+        <div class="metric-label">Total Favorites</div>
+      </div>
+    </div>
+
+    <!-- Top Songs -->
+    <section class="section" *ngIf="analytics()!.topSongs?.length">
+      <h2 class="section-title">🏆 Top Songs</h2>
+      <div class="top-songs">
+        <div class="top-song-row" *ngFor="let song of analytics()!.topSongs; let i = index"
+             (click)="playTopSong(song, analytics()!.topSongs)">
+          <span class="rank" [class.top]="i === 0">{{i + 1}}</span>
+          <div class="song-cover">
+            <span *ngIf="!song.coverImageUrl">🎵</span>
+            <img *ngIf="song.coverImageUrl" [src]="song.coverImageUrl" [alt]="song.title">
+          </div>
+          <div class="song-info">
+            <span class="song-title">{{song.title}}</span>
+            <span class="song-genre">{{song.genre || 'Unknown Genre'}}</span>
+          </div>
+          <div class="song-plays">
+            <span class="plays-count">{{song.playCount | number}}</span>
+            <span class="plays-label">plays</span>
+          </div>
+          <div class="play-bar">
+            <div class="play-bar-fill" [style.width.%]="getPlayPercent(song, analytics()!.topSongs)"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="quick-actions">
+        <a routerLink="../upload" class="action-card">
+          <span class="action-icon">⬆️</span>
+          <span>Upload New Song</span>
+        </a>
+        <a routerLink="../albums" class="action-card">
+          <span class="action-icon">💿</span>
+          <span>Manage Albums</span>
+        </a>
+        <a routerLink="../analytics" class="action-card">
+          <span class="action-icon">📈</span>
+          <span>View Analytics</span>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <div *ngIf="!loading() && !analytics()" class="empty-state">
+    <span>🎵</span>
+    <h3>Get started!</h3>
+    <p>Upload your first song to see your stats here</p>
+    <a routerLink="../upload" class="btn-primary">Upload Song</a>
+  </div>
+</div>

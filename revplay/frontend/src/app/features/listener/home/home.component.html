@@ -1,0 +1,63 @@
+<div class="home">
+
+  <div class="home-header">
+    <h1>Good {{ getGreeting() }}, {{ authService.currentUser()?.displayName || authService.currentUser()?.username }}! 👋</h1>
+    <p>What do you want to listen to today?</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-banner" *ngIf="error()">
+    ⚠️ {{ error() }}
+    <button (click)="loadSongs()">Retry</button>
+  </div>
+
+  <!-- Loading skeletons -->
+  <div *ngIf="loading()" class="skeleton-section">
+    <div class="skeleton-title"></div>
+    <div class="songs-grid">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6,7,8]"></div>
+    </div>
+  </div>
+
+  <!-- Songs loaded -->
+  <div *ngIf="!loading() && !error()">
+
+    <!-- Trending -->
+    <section class="section" *ngIf="trending().length > 0">
+      <div class="section-header">
+        <h2 class="section-title">🔥 Trending Now</h2>
+        <button class="btn-play-all" (click)="playAll(trending())">▶ Play All</button>
+      </div>
+      <div class="songs-grid">
+        <app-song-card
+          *ngFor="let song of trending()"
+          [song]="song"
+          [queue]="trending()">
+        </app-song-card>
+      </div>
+    </section>
+
+    <!-- Latest -->
+    <section class="section" *ngIf="latest().length > 0">
+      <div class="section-header">
+        <h2 class="section-title">✨ Recently Added</h2>
+        <button class="btn-play-all" (click)="playAll(latest())">▶ Play All</button>
+      </div>
+      <div class="songs-grid">
+        <app-song-card
+          *ngFor="let song of latest()"
+          [song]="song"
+          [queue]="latest()">
+        </app-song-card>
+      </div>
+    </section>
+
+    <!-- Empty — no songs at all -->
+    <div class="empty-state" *ngIf="trending().length === 0 && latest().length === 0">
+      <div class="empty-icon">🎵</div>
+      <h3>No songs yet!</h3>
+      <p>Login as <strong>Artist</strong> → Upload Song → then come back here to listen.</p>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div class="search-page">
+  <div class="search-header">
+    <h1>Search</h1>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Artists, songs, genres..."
+             [ngModel]="query()"
+             (ngModelChange)="onSearch($event)">
+      <button class="clear-btn" *ngIf="query()" (click)="onSearch('')">✕</button>
+    </div>
+    <div class="filters" *ngIf="searched()">
+      <button class="filter-chip" [class.active]="selectedGenre() === ''"
+              (click)="selectedGenre.set('')">All</button>
+      <button class="filter-chip" *ngFor="let g of genres"
+              [class.active]="selectedGenre() === g"
+              (click)="selectedGenre.set(g)">{{g}}</button>
+    </div>
+  </div>
+
+  <div class="loading-row" *ngIf="loading()">
+    <div class="spinner"></div>
+    <span>Searching...</span>
+  </div>
+
+  <div class="results" *ngIf="!loading() && searched()">
+    <div class="results-count" *ngIf="filteredResults().length">
+      {{filteredResults().length}} result{{filteredResults().length !== 1 ? 's' : ''}}
+    </div>
+    <div class="songs-grid" *ngIf="filteredResults().length">
+      <app-song-card *ngFor="let song of filteredResults()"
+                     [song]="song"
+                     (toggleFav)="toggleFavorite($event)">
+      </app-song-card>
+    </div>
+    <div class="empty-state" *ngIf="!filteredResults().length">
+      <span>🔍</span>
+      <p>No results for "{{query()}}"</p>
+      <small>Try a different search term</small>
+    </div>
+  </div>
+
+  <div class="browse-genres" *ngIf="!searched()">
+    <h2 class="section-title">Browse by Genre</h2>
+    <div class="genres-grid">
+      <button class="genre-card" *ngFor="let g of genres; let i = index"
+              [style.background]="getGenreColor(i)"
+              (click)="selectedGenre.set(g); onSearch(g)">
+        <span class="genre-name">{{g}}</span>
+      </button>
+    </div>
+  </div>
+</div>

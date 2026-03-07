@@ -1,0 +1,80 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>💿 Albums</h1>
+      <p>{{albums().length}} albums</p>
+    </div>
+    <button class="btn-create" (click)="showModal.set(true)">+ New Album</button>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Loading albums...</div>
+
+  <div *ngIf="!loading()">
+    <div class="albums-grid" *ngIf="albums().length">
+      <div class="album-card" *ngFor="let album of albums()" (click)="selected.set(album)"
+           [class.active]="selected()?.id === album.id">
+        <div class="album-cover">💿</div>
+        <div class="album-info">
+          <span class="album-title">{{album.title}}</span>
+          <span class="album-meta">{{album.songs?.length || 0}} songs</span>
+          <span class="album-date">{{album.createdAt | date:'MMM y'}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!albums().length">
+      <span>💿</span>
+      <h3>No albums yet</h3>
+      <p>Create an album to organize your songs</p>
+      <button class="btn-create" (click)="showModal.set(true)">Create Album</button>
+    </div>
+  </div>
+
+  <!-- Album Detail -->
+  <div class="album-detail" *ngIf="selected()">
+    <div class="detail-header">
+      <button class="back-btn" (click)="selected.set(null)">← Back</button>
+      <div class="detail-cover">💿</div>
+      <div class="detail-info">
+        <h2>{{selected()!.title}}</h2>
+        <p *ngIf="selected()!.description">{{selected()!.description}}</p>
+        <span>{{selected()!.songs?.length || 0}} songs · {{selected()!.artistName}}</span>
+      </div>
+    </div>
+    <div class="song-list" *ngIf="selected()!.songs?.length">
+      <div class="song-row" *ngFor="let song of selected()!.songs; let i = index">
+        <span class="num">{{i + 1}}</span>
+        <div class="info">
+          <span class="title">{{song.title}}</span>
+          <span class="genre">{{song.genre || '—'}}</span>
+        </div>
+        <span class="plays">{{song.playCount}} plays</span>
+        <span class="dur">{{song.duration || '--:--'}}</span>
+      </div>
+    </div>
+    <div class="no-songs" *ngIf="!selected()!.songs?.length">
+      No songs in this album yet. Upload songs and assign them to this album.
+    </div>
+  </div>
+</div>
+
+<!-- Create Album Modal -->
+<div class="modal-backdrop" *ngIf="showModal()" (click)="showModal.set(false)">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Create Album</h2>
+    <div class="form-group">
+      <label>Album Title *</label>
+      <input type="text" placeholder="Album name" [(ngModel)]="form.title">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea placeholder="Optional description" [(ngModel)]="form.description" rows="3"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="showModal.set(false)">Cancel</button>
+      <button class="btn-submit" (click)="create()" [disabled]="creating()">
+        {{creating() ? 'Creating...' : 'Create'}}
+      </button>
+    </div>
+  </div>
+</div>

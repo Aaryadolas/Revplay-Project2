@@ -1,0 +1,89 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>📂 Playlists</h1>
+      <p>{{playlists().length}} playlists</p>
+    </div>
+    <button class="btn-create" (click)="showModal.set(true)">+ New Playlist</button>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Loading playlists...</div>
+
+  <div class="layout" *ngIf="!loading()">
+    <!-- Playlist List -->
+    <div class="playlist-list">
+      <div class="empty-state" *ngIf="!playlists().length">
+        <span>📂</span>
+        <p>No playlists yet</p>
+        <button class="btn-create" (click)="showModal.set(true)">Create your first</button>
+      </div>
+      <div class="playlist-item" *ngFor="let p of playlists()"
+           [class.active]="selectedPlaylist()?.id === p.id"
+           (click)="selectPlaylist(p)">
+        <div class="playlist-cover">🎵</div>
+        <div class="playlist-info">
+          <span class="playlist-name">{{p.name}}</span>
+          <span class="playlist-meta">{{p.songs?.length || 0}} songs · {{p.privacy}}</span>
+        </div>
+        <div class="playlist-actions">
+          <button (click)="playPlaylist(p); $event.stopPropagation()" title="Play">▶</button>
+          <button (click)="deletePlaylist(p.id); $event.stopPropagation()" class="delete" title="Delete">🗑</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selected Playlist Detail -->
+    <div class="playlist-detail" *ngIf="selectedPlaylist()">
+      <div class="detail-header">
+        <div class="detail-cover">🎵</div>
+        <div class="detail-info">
+          <h2>{{selectedPlaylist()!.name}}</h2>
+          <p>{{selectedPlaylist()!.description}}</p>
+          <span>{{selectedPlaylist()!.songs?.length || 0}} songs · {{selectedPlaylist()!.privacy}}</span>
+          <button class="play-btn" (click)="playPlaylist(selectedPlaylist()!)">▶ Play All</button>
+        </div>
+      </div>
+      <div class="song-list" *ngIf="selectedPlaylist()!.songs?.length">
+        <div class="song-row" *ngFor="let song of selectedPlaylist()!.songs; let i = index">
+          <span class="song-num">{{i + 1}}</span>
+          <div class="song-info">
+            <span class="song-title">{{song.title}}</span>
+            <span class="song-artist">{{song.artistName}}</span>
+          </div>
+          <span class="song-duration">{{song.duration || '--:--'}}</span>
+        </div>
+      </div>
+      <div class="empty-songs" *ngIf="!selectedPlaylist()!.songs?.length">
+        No songs in this playlist yet
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Playlist Modal -->
+<div class="modal-backdrop" *ngIf="showModal()" (click)="showModal.set(false)">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h2>Create Playlist</h2>
+    <div class="form-group">
+      <label>Playlist Name *</label>
+      <input type="text" placeholder="My Awesome Playlist" [(ngModel)]="newPlaylist.name">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" placeholder="Optional description" [(ngModel)]="newPlaylist.description">
+    </div>
+    <div class="form-group">
+      <label>Privacy</label>
+      <select [(ngModel)]="newPlaylist.privacy">
+        <option value="PUBLIC">Public</option>
+        <option value="PRIVATE">Private</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="showModal.set(false)">Cancel</button>
+      <button class="btn-submit" (click)="createPlaylist()" [disabled]="creating()">
+        {{creating() ? 'Creating...' : 'Create'}}
+      </button>
+    </div>
+  </div>
+</div>

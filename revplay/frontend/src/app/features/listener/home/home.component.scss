@@ -1,0 +1,87 @@
+.home {
+  padding: 32px;
+  max-width: 1400px;
+}
+
+.home-header {
+  margin-bottom: 40px;
+  
+  .greeting {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .subtitle { color: var(--text-secondary); font-size: 15px; }
+}
+
+.section {
+  margin-bottom: 48px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.play-all {
+  background: none;
+  border: 1px solid var(--text-secondary);
+  color: var(--text-secondary);
+  padding: 6px 20px;
+  border-radius: 500px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  &:hover { border-color: var(--text-primary); color: var(--text-primary); }
+}
+
+.songs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-secondary);
+  span { font-size: 48px; display: block; margin-bottom: 16px; }
+  p { font-size: 15px; }
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.skeleton-card {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .home { padding: 24px 16px; }
+  .home-header .greeting { font-size: 24px; }
+  .songs-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+}
